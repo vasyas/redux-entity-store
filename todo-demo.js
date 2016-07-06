@@ -288,11 +288,16 @@ entityStore.loadData(actions).then(function() {
 
   actions = actionObject.bind(actionCreators, store.dispatch);
 
-  document.querySelector('link[rel=stylesheet]').href = 'https://rawgit.com/tastejs/todomvc-app-css/master/index.css';
+  let stylesLink = document.head.appendChild(document.createElement('link'));
+  stylesLink.rel = 'stylesheet';
+  stylesLink.href = 'https://rawgit.com/tastejs/todomvc-app-css/master/index.css';
+
+  let container = document.body.appendChild(document.createElement('div'));
+
   render(
       <Provider store={store}>
         <App />
       </Provider>,
-      document.getElementById('app')
+      container
   )
 });

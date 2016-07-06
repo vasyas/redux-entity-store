@@ -1,9 +1,4 @@
-/**
- * Package provide relational db-like access to Redux store.
- *
- * It is also supports updating server-side database
- */
-import { sideEffect } from '../../actionObject/src/actionObject';
+import { sideEffect } from 'redux-action-object';
 
 const RowUtils = {
   clone: function (row) {

@@ -7,3 +7,8 @@ redux-entity-store
 
 Use ORM-like API to access Redux store state
 
+/**
+ * Package provide relational db-like access to Redux store.
+ *
+ * It is also supports updating server-side database
+ */

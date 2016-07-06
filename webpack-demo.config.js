@@ -3,6 +3,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 var config = {
   entry: [
+    'babel-polyfill',
     'webpack/hot/dev-server',
     './todo-demo.js'
   ],
@@ -12,7 +13,13 @@ var config = {
     hot: true,
     inline: true,
     historyApiFallback: true,
-    stats: 'errors-only'
+    stats: 'errors-only',
+    proxy: {
+      '/data*': {
+        target: 'http://localhost:3001',
+        secure: false
+      }
+    }
   },
   devtool: '#source-map',
   output: {

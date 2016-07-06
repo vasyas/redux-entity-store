@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import * as re from '../src/restore';
+import * as es from '../src';
 
 describe('restore.Session test', function() {
     const data = {
@@ -12,7 +12,7 @@ describe('restore.Session test', function() {
     let session;
 
     beforeEach(function() {
-        session = new re.Session(data);
+        session = new es.Session(data);
     });
 
     it('Retreive data', function() {
@@ -37,7 +37,7 @@ describe('restore.Session test', function() {
         const user1 = session.users.byId(1);
         user1.name = 'a1';
 
-        var commitedData = session.commit().dataUpdates;
+        const commitedData = session.commit().dataUpdates;
 
         expect(data.users[0].name).to.eql('a'); // prev state
         expect(commitedData.users[0].name).to.eql('a1'); // commited state
@@ -48,7 +48,7 @@ describe('restore.Session test', function() {
 
         session.users.remove(user1);
 
-        var commitedData = session.commit().dataUpdates;
+        const commitedData = session.commit().dataUpdates;
         expect(commitedData.users.length).to.eql(1);
     });
 
@@ -62,11 +62,7 @@ describe('restore.Session test', function() {
     // double creation
     expect(() => session.users.create({ id: 3, name: 'q'})).to.throw('already exist');
 
-    var commitedData = session.commit().dataUpdates;
+    let commitedData = session.commit().dataUpdates;
     expect(commitedData.users.length).to.eql(3);
   });
-});
-
-describe('restore.data test', function() {
-    
 });
