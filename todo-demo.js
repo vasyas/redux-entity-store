@@ -144,7 +144,7 @@ class TodoTextInput extends React.Component {
   render() {
     return (
         <input className={
-        classnames({
+        classNames({
           edit: this.props.editing,
           'new-todo': this.props.newTodo
         })}
@@ -245,7 +245,7 @@ class TodoItem extends React.Component {
     }
 
     return (
-        <li className={classnames({
+        <li className={classNames({
         completed: todo.completed,
         editing: this.state.editing
       })}>

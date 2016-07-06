@@ -1,4 +1,5 @@
 import { expect } from 'chai';
+import { describe, it, beforeEach } from 'mocha';
 import * as es from '../src';
 
 describe('restore.Session test', function() {

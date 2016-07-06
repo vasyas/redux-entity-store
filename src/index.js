@@ -21,7 +21,7 @@ const RowUtils = {
   }
 };
 
-function DataOp(type:String, table:String, fields:Map) {
+function DataOp(type:String, table:String, fields:Object) {
   this.type = type;
   this.table = table;
   this.fields = fields;
@@ -228,8 +228,8 @@ export function data(target, name, descriptor) {
               body: JSON.stringify(ops)
             })
             .then(confirmSuccessResponse)
-            .then(response => dispatch(REMOTE_END))
-            .catch(e => dispatch(REMOTE_FAIL));
+            .then(() => dispatch(REMOTE_END))
+            .catch(() => dispatch(REMOTE_FAIL));
           });
         }
 

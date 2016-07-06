@@ -29,8 +29,6 @@ const pool = mysql.createPool({
   connectionLimit: 10
 });
 
-const tables = [ 'todo '];
-
 async function getData() {
   this.body = {
     todo: await pool.query('select * from todo')
@@ -114,7 +112,7 @@ function startServer() {
       if (error)
         reject(error);
       else {
-        console.info('Server started on port 3001');
+        console.info('Server started on port 3001'); // eslint-disable-line no-console
         resolve();
       }
     });
@@ -133,7 +131,7 @@ async function initDb() {
     await initDb();
     await startServer();
   } catch(e) {
-    console.log(e.stack);
+    console.log(e.stack); // eslint-disable-line no-console
   }
 })();
 
