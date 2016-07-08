@@ -44,11 +44,11 @@ function generateId() {
 class TodoModel {
   data = {
     todo: [{
-        text: 'Use Redux',
-        completed: false,
-        id: 0
+      id: 0,
+      text: 'Use Redux',
+      completed: false
     }]
-  }
+  };
 
   @entityStore.data
   add(session, text) {

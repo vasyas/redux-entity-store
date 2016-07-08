@@ -1,7 +1,7 @@
 {
   "name": "redux-entity-store",
   "version": "0.0.1",
-  "description": "Use ORM-like API to access Redux store state",
+  "description": "ORM-like API to access Redux store state",
   "main": "lib/index.js",
   "files": [
     "lib",
