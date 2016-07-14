@@ -7,6 +7,8 @@ redux-entity-store
 
 ORM-like API to access Redux store state
 
+### UNDER HEAVY DEVELOPMENT! Stay in touch.
+
 ## Why
 
 In Redux your reducer can not change store state directly. Instead your write this:
