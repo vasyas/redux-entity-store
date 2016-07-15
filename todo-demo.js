@@ -279,6 +279,8 @@ class Footer extends React.Component {
 // bootstrap
 let actions:TodoModel = new TodoModel();
 
+entityStore.useServer('/data');
+
 entityStore.loadData(actions).then(function() {
   const { reducer, actionCreators } = actionObject.split(actions);
 

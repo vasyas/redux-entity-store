@@ -188,6 +188,12 @@ function confirmSuccessResponse(response) {
   throw error;
 }
 
+let serverUrl;
+
+export function useServer(s) {
+  serverUrl = s;
+}
+
 /**
  * Mark reducer action impl as data, so it would be wrapped in restore.Sesssion call
  * To be used with actionObject
@@ -216,21 +222,22 @@ export function data(target, name, descriptor) {
         if (Object.keys(dataUpdates).length > 0) {
           ret.data = Object.assign({}, this.data, dataUpdates);
 
-          sideEffect(function(dispatch) {
-            dispatch(REMOTE_BEGIN);
+          if (serverUrl) {
+            sideEffect(function (dispatch) {
+              dispatch(REMOTE_BEGIN);
 
-            return fetch('/data', {
-              method: 'POST',
-              headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify(ops)
-            })
-            .then(confirmSuccessResponse)
-            .then(() => dispatch(REMOTE_END))
-            .catch(() => dispatch(REMOTE_FAIL));
-          });
+              return fetch(serverUrl, {
+                method: 'POST',
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(ops)
+              }).then(confirmSuccessResponse)
+                .then(() => dispatch(REMOTE_END))
+                .catch(() => dispatch(REMOTE_FAIL));
+            });
+          }
         }
 
         return ret;
