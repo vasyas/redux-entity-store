@@ -58,10 +58,11 @@ NOTE: further code examples will be given using [redux-action-object.](https://g
 
 Your store state should contain property named 'data'. Part of the state tree, starting with data, will be managed by
 redux-entity-store. Data is an object whose properties are tables. Each table is an array of objects called entities.
-Each entity should have property named 'id':
+Each entity should have property named 'id'.
+
 
 ```javascript
-class TodoModel {
+class TodoModel {                                  // Initial state using redux-action-object
   data = {
     todo: [{
         id: 0,
@@ -82,7 +83,7 @@ import * as entityStore from 'redux-entity-store';
 class TodoModel {
   ...
   @entityStore.data
-  edit(session, id, text) {
+  edit(session, id, text) {                         // Reducer function
     const todo = session.todo.byId(id);
     todo.text = text;
   }
@@ -109,8 +110,78 @@ class TodosComponent extends React.Component {
 
 ## How it works
 
-*Redux-entity-store* intercepts reducers annotated with *@data*.
+*Redux-entity-store* intercepts reducers functions annotated with *@data*. All entities retreived via *session* and modified
+are put back into the store on return from the reducer.
 
+## Binding UI components to entities
+
+Usually you will want to bind to specific subset of data in your UI component. Memoized selectors using [Reselect](https://github.com/reactjs/reselect) provides handy and
+fast method to do it. See example:
+
+```javascript
+import { createSelector, createStructuredSelector } from 'reselect';
+
+const data = state => state.app.data;
+const todos = createSelector(data, data => data.todos);
+
+const selectedTodoId = (state, props) => props.params.id;
+const selectedTodo = createSelector(todos, selectedTodoId, (todos, selectedTodoId) => (
+    todos.filter(todo => todo.id == selectedTodoId)[0]
+));
+
+@connect(createStructuredSelector({
+    selectedTodo
+}))
+class EditTodo extends React.Component {
+  handleUpdate(id, text) {
+    actions.edit(id, text);
+  }
+}
+```
+
+## Server side support
+
+For certain projects Redux state can contain the same entities are as the server side. For such case, redux-entity-store
+can generate requests for update server-side data.
+
+FIXME write instructions
+
+## Demo
+
+Server part of the demo app requires Mysql to be installed. For the MacOS and Homebrew, use:
+
+```
+brew install mysql
+mysql.server restart
+```
+
+then
+
+```
+mysql -u root
+> create database todo;
+> grant all privileges on todo.* to 'todo'@'localhost' identified by 'todo';
+```
+
+To start server part, use
+
+```
+npm run start:server
+```
+
+Then in a different terminal start frontend part
+
+```
+npm run start
+```
+
+Open [http://localhost:3000/](http://localhost:3000/) to access demo app.
+
+All demo data will be saved into Mysql. You can data dump by opening [http://localhost:3001/data](http://localhost:3001/data).
+
+## API Reference
+
+## Alternatives
 
 [npm-image]: https://img.shields.io/npm/v/redux-entity-store.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/redux-entity-store

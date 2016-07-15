@@ -37,7 +37,7 @@ function classNames() {
 // model
 
 function generateId() {
-  const s = Math.random().toString()
+  const s = Math.random().toString();
   return parseInt(s.substring(s.indexOf('.') + 1));
 }
 
@@ -197,7 +197,7 @@ class MainSection extends React.Component {
 
 class TodoItem extends React.Component {
   constructor(props, context) {
-    super(props, context)
+    super(props, context);
 
     this.state = {
       editing: false
@@ -205,7 +205,7 @@ class TodoItem extends React.Component {
   }
 
   handleDoubleClick() {
-    this.setState({ editing: true })
+    this.setState({ editing: true });
   }
 
   handleSave(id, text) {

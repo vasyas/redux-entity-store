@@ -1,10 +1,3 @@
-/*
-  Create database before running this script:
-
-  mysql -u root
-  create database todo;
-  grant all privileges on todo.* to 'todo'@'localhost' identified by 'todo';
- */
 import Application from 'koa';
 import route from 'koa-route';
 import logger from 'koa-logger';
