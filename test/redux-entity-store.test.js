@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { describe, it, beforeEach } from 'mocha';
 import * as es from '../src';
 
-describe('restore.Session test', function() {
+describe('restore.Session test', function () {
     const data = {
         users: [
             { id: 1, name: 'a' },
@@ -12,11 +12,11 @@ describe('restore.Session test', function() {
 
     let session;
 
-    beforeEach(function() {
+    beforeEach(function () {
         session = new es.Session(data);
     });
 
-    it('Retreive data', function() {
+    it('Retreive data', function () {
         const user1 = session.users.byId(1);
         expect(user1.name).to.eql('a');
 
@@ -28,13 +28,13 @@ describe('restore.Session test', function() {
         expect(user1_reselect).to.equal(user1);
     });
 
-    it('Retain data on no change', function() {
+    it('Retain data on no change', function () {
         session.users.byId(1);
 
         expect(session.commit().dataUpdates).to.eql({});
     });
 
-    it('Update row', function() {
+    it('Update row', function () {
         const user1 = session.users.byId(1);
         user1.name = 'a1';
 
@@ -44,7 +44,7 @@ describe('restore.Session test', function() {
         expect(commitedData.users[0].name).to.eql('a1'); // commited state
     });
 
-    it('remove row', function() {
+    it('remove row', function () {
         const user1 = session.users.byId(1);
 
         session.users.remove(user1);
@@ -53,17 +53,17 @@ describe('restore.Session test', function() {
         expect(commitedData.users.length).to.eql(1);
     });
 
-  it('create row', function() {
-    expect(() => session.users.create({ name: 'q' })).to.throw('id');
+    it('create row', function () {
+        expect(() => session.users.create({ name: 'q' })).to.throw('id');
 
-    expect(() => session.users.create({ id: 1, name: 'q'})).to.throw('already exist');
+        expect(() => session.users.create({ id: 1, name: 'q' })).to.throw('already exist');
 
-    session.users.create({ id: 3, name: 'q' });
+        session.users.create({ id: 3, name: 'q' });
 
-    // double creation
-    expect(() => session.users.create({ id: 3, name: 'q'})).to.throw('already exist');
+        // double creation
+        expect(() => session.users.create({ id: 3, name: 'q' })).to.throw('already exist');
 
-    let commitedData = session.commit().dataUpdates;
-    expect(commitedData.users.length).to.eql(3);
-  });
+        let commitedData = session.commit().dataUpdates;
+        expect(commitedData.users.length).to.eql(3);
+    });
 });

@@ -15,116 +15,119 @@ app.use(route.get('/data', getData));
 app.use(route.post('/data', updateData));
 
 const pool = mysql.createPool({
-  host: 'localhost',
-  user: 'todo',
-  password: 'todo',
-  database: 'todo',
-  connectionLimit: 10
+    host: 'localhost',
+    user: 'todo',
+    password: 'todo',
+    database: 'todo',
+    connectionLimit: 10
 });
 
 async function getData() {
-  this.body = {
-    todo: await pool.query('select * from todo')
-  };
+    this.body = {
+        todo: await pool.query('select * from todo')
+    };
 
-  this.status = 200;
+    this.status = 200;
 }
 
 async function updateQuery(con, op) {
-  let q = '',
-    values = [];
+    let q = '',
+        values = [];
 
-  for (const fieldName in op.fields) {
-    if (q != '') q = q + ',';
-    q = q + ` ${fieldName} = ?`;
-    values.push(op.fields[fieldName]);
-  }
+    for (const fieldName in op.fields) {
+        if (fieldName == 'id') continue;
 
-  q = `update ${op.table} set` + q;
+        if (q != '') q = q + ',';
+        q = q + ` ${fieldName} = ?`;
+        values.push(op.fields[fieldName]);
+    }
 
-  await con.query(q, values);
+    q = `update ${op.table} set ${q} where id = ?`;
+    values.push(op.fields.id);
+
+    await con.query(q, values);
 }
 
 async function createQuery(con, op) {
-  let fields = [],
-      valuePlaceholders = [],
-      values = [];
+    let fields = [],
+        valuePlaceholders = [],
+        values = [];
 
-  for (const fieldName in op.fields) {
-    valuePlaceholders.push('?');
-    fields.push(fieldName);
-    values.push(op.fields[fieldName]);
-  }
+    for (const fieldName in op.fields) {
+        valuePlaceholders.push('?');
+        fields.push(fieldName);
+        values.push(op.fields[fieldName]);
+    }
 
-  const q = `insert into ${op.table}(${fields.join(',')}) values(${valuePlaceholders.join(',')})`;
+    const q = `insert into ${op.table}(${fields.join(',')}) values(${valuePlaceholders.join(',')})`;
 
-  await con.query(q, values);
+    await con.query(q, values);
 }
 
 async function deleteQuery(con, op) {
-  const q = `delete from ${op.table} where id = ?`;
+    const q = `delete from ${op.table} where id = ?`;
 
-  await con.query(q, [op.fields.id]);
+    await con.query(q, [op.fields.id]);
 }
 
 async function updateData() {
-  const con = await pool.getConnection();
+    const con = await pool.getConnection();
 
-  con.beginTransaction();
+    con.beginTransaction();
 
-  try {
-    for (const op of this.request.body) {
-      switch(op.type) {
-        case 'UPDATE':
-          await updateQuery(con, op);
-          break;
+    try {
+        for (const op of this.request.body) {
+            switch (op.type) {
+                case 'UPDATE':
+                    await updateQuery(con, op);
+                    break;
 
-        case 'CREATE':
-          await createQuery(con, op);
-          break;
+                case 'CREATE':
+                    await createQuery(con, op);
+                    break;
 
-        case 'DELETE':
-          await deleteQuery(con, op);
-          break;
-      }
+                case 'DELETE':
+                    await deleteQuery(con, op);
+                    break;
+            }
+        }
+
+        con.commit();
+    } catch (e) {
+        con.rollback();
+        throw e;
     }
 
-    con.commit();
-  } catch(e) {
-    con.rollback();
-    throw e;
-  }
-
-  this.status = 200;
-  this.body = 'Ok';
+    this.status = 200;
+    this.body = 'Ok';
 }
 
 function startServer() {
-  return new Promise((resolve, reject) => {
-    app.listen(3001, error => {
-      if (error)
-        reject(error);
-      else {
-        console.info('Server started on port 3001'); // eslint-disable-line no-console
-        resolve();
-      }
+    return new Promise((resolve, reject) => {
+        app.listen(3001, error => {
+            if (error)
+                reject(error);
+            else {
+                console.info('Server started on port 3001'); // eslint-disable-line no-console
+                resolve();
+            }
+        });
     });
-  });
 }
 
 async function initDb() {
-  const tables = await pool.query('show tables');
-  if (tables.length == 0) {
-    await pool.query('create table todo (id varchar(24) primary key, `text` text, completed bool)')
-  }
+    const tables = await pool.query('show tables');
+    if (tables.length == 0) {
+        await pool.query('create table todo (id varchar(24) primary key, `text` text, completed bool)')
+    }
 }
 
-(async function() {
-  try {
-    await initDb();
-    await startServer();
-  } catch(e) {
-    console.log(e.stack); // eslint-disable-line no-console
-  }
+(async function () {
+    try {
+        await initDb();
+        await startServer();
+    } catch (e) {
+        console.log(e.stack); // eslint-disable-line no-console
+    }
 })();
 

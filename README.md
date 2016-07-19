@@ -7,8 +7,6 @@ redux-entity-store
 
 ORM-like API to access Redux store state
 
-### UNDER HEAVY DEVELOPMENT! Stay in touch.
-
 ## Why
 
 In Redux your reducer can not change store state directly. Instead your write this:
@@ -144,7 +142,28 @@ class EditTodo extends React.Component {
 For certain projects Redux state can contain the same entities are as the server side. For such case, redux-entity-store
 can generate requests for update server-side data.
 
-FIXME write instructions
+To use server side support, backend must accept entity updates in the format:
+```
+[
+    {
+        type: 'CREATE',     // possible values are CREATE, UPDATE, DELETE
+        table: 'todo',      // mandatory table name
+        fields: { id: 1, text: 'text' } // id field is required
+    },
+    {
+        type: 'DELETE',
+        table: 'todo',
+        fields: { id: 1 }   // only id will be sent
+    },
+    {
+        type: 'UPDATE',
+        table: 'todo',
+        fields: { id: 1 }   // id is required
+    }
+]
+```
+
+Exampe of the server side code is in *todo-demo-server.js*.
 
 ## Demo
 
@@ -180,6 +199,8 @@ Open [http://localhost:3000/](http://localhost:3000/) to access demo app.
 All demo data will be saved into Mysql. You can data dump by opening [http://localhost:3001/data](http://localhost:3001/data).
 
 ## API Reference
+
+
 
 ## Alternatives
 
