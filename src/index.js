@@ -37,7 +37,7 @@ function Table(rows, tableName) {
     function tracked(row) {
         if (typeof row.id == 'undefined') throw 'Required property id is missing for ' + row;
 
-        if (trackedRows[row.id])
+        if (trackedRows.hasOwnProperty(row.id))
             return trackedRows[row.id];
 
         const trackedRow = RowUtils.clone(row);
@@ -47,7 +47,7 @@ function Table(rows, tableName) {
     }
 
     function byId(id) {
-        return tracked(rows.find(row => row.id = id));
+        return tracked(rows.find(row => row.id == id));
     }
 
     function filter(f = {}) {
@@ -59,7 +59,8 @@ function Table(rows, tableName) {
             return true;
         };
 
-        return rows.filter(predicate).map(row => tracked(row));
+        return rows.filter(predicate)
+            .map(row => tracked(row));
     }
 
     function remove(row) {
@@ -69,7 +70,7 @@ function Table(rows, tableName) {
     function create(newRow) {
         if (typeof newRow.id == 'undefined') throw 'Required property "id" is missing in ' + newRow;
 
-        if (typeof trackedRows[newRow.id] != 'undefined') throw 'A row with id ' + newRow.id + ' already exist';
+        if (trackedRows.hasOwnProperty(newRow.id)) throw 'A row with id ' + newRow.id + ' already exist';
 
         for (const row of rows) {
             if (row.id == newRow.id)
@@ -86,21 +87,17 @@ function Table(rows, tableName) {
         Object.keys(trackedRows).forEach(rowId => {
             const trackedRow = trackedRows[rowId];
 
-            for (let i = 0; i < r.length; i++) {
+            for (let i = 0; i < r.length; i ++) {
                 const row = r[i];
 
                 if (row.id == rowId) {
                     if (trackedRow == null) { // deleted
-                        if (r === rows) r = rows.slice(0); // create a copy
-
                         r = r.slice(0, i).concat(r.slice(i + 1, r.length));
                         ops.push(new DataOp(DataOp.DELETE, tableName, row));
                         return;
                     }
 
                     if (!RowUtils.sameFields(row, trackedRow)) { // updated
-                        if (r === rows) r = rows.slice(0); // create a copy
-
                         r = r.slice(0, i).concat([trackedRow], r.slice(i + 1, r.length));
                         ops.push(new DataOp(DataOp.UPDATE, tableName, trackedRow));
                         return;
