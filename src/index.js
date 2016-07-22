@@ -21,6 +21,14 @@ const RowUtils = {
     }
 };
 
+/**
+ * Instances of this type will be sent server side to sync backend model
+ *
+ * @param {string} type Operation type, one of CREATE, UPDATE, DELETE
+ * @param {string} table name
+ * @param {Object} fields for the operation
+ * @constructor
+ */
 function DataOp(type:String, table:String, fields:Object) {
     this.type = type;
     this.table = table;
@@ -31,6 +39,16 @@ DataOp.CREATE = 'CREATE';
 DataOp.UPDATE = 'UPDATE';
 DataOp.DELETE = 'DELETE';
 
+/**
+ * Provides access to entities of specific type in a session.
+ *
+ * Instances of Table are constructed on session start.
+ * Entities retreived via Table are flushed on session end.
+ *
+ * @param {Array} rows from the store state
+ * @param {string} tableName
+ * @constructor
+ */
 function Table(rows, tableName) {
     let trackedRows = {};
 
@@ -125,12 +143,10 @@ function Table(rows, tableName) {
 }
 
 /**
- * Session can run either in connect or disconnected mode.
+ * Interface for retreiving relational data from the store.
  *
- * In connected mode session keep tracks of all returned object. And if objects are updated, redux data state is updated.
- * In disconnected mode objects are not tracked.
- *
- * Disconnected mode is used for selectors. Connected mode required for reducers
+ * Session instance is passed to the reducer functions annotated with @data.
+ * Each
  */
 export function Session(data) {
     function createTables() {
