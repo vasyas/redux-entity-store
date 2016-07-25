@@ -9,7 +9,7 @@ ORM-like API to access Redux store state
 
 ## Why
 
-In Redux your reducer can not change store state directly. Instead your write this:
+In Redux your reducer can not change store state directly. Instead, you write this:
 
 ```javascript
 case EDIT_TODO:
@@ -35,9 +35,9 @@ case EDIT_TODO:
       });
 ```
 
-In particular, it make you use ImmutableJS objects instead plain JS objects.
+In particular, it makes you use ImmutableJS objects instead plain JS objects.
 
-**Redux-entity-store** solves this by modelling store state as relational database and providing ORM-like API to access
+**Redux-entity-store** solves this by modeling store state as the relational database and providing ORM-like API to access
 it. Above example could be rewritten as:
 
 ```
@@ -54,9 +54,9 @@ Looks much simpler, right?
 
 NOTE: further code examples will be given using [redux-action-object.](https://github.com/vasyas/redux-action-object)
 
-Your store state should contain property named 'data'. Part of the state tree, starting with data, will be managed by
+Your store state should contain a property named 'data'. Part of the state tree, starting with data, will be managed by
 redux-entity-store. Data is an object whose properties are tables. Each table is an array of objects called entities.
-Each entity should have property named 'id'.
+Each entity should have a property named 'id'.
 
 
 ```javascript
@@ -113,7 +113,7 @@ are put back into the store on return from the reducer.
 
 ## Binding UI components to entities
 
-Usually you will want to bind to specific subset of data in your UI component. Memoized selectors using [Reselect](https://github.com/reactjs/reselect) provides handy and
+Usually, you will want to bind to a specific subset of data in your UI component. Memoized selectors using [Reselect](https://github.com/reactjs/reselect) provides a handy and
 fast method to do it. See example:
 
 ```javascript
@@ -139,8 +139,8 @@ class EditTodo extends React.Component {
 
 ## Server side support
 
-For certain projects Redux state can contain the same entities are as the server side. For such case, redux-entity-store
-can generate requests for update server-side data.
+For certain projects, Redux state can contain the same entities as the server side. For such cases, redux-entity-store
+can generate requests to update server-side data.
 
 To use server side support, backend must accept entity updates in the format:
 ```
@@ -163,11 +163,11 @@ To use server side support, backend must accept entity updates in the format:
 ]
 ```
 
-Exampe of the server side code is in *todo-demo-server.js*.
+Example of the server side code is in *todo-demo-server.js*.
 
 ## Demo
 
-Server part of the demo app requires Mysql to be installed. For the MacOS and Homebrew, use:
+The server part of the demo app requires Mysql to be installed. For the MacOS and Homebrew, use:
 
 ```
 brew install mysql
@@ -188,7 +188,7 @@ To start server part, use
 npm run start:server
 ```
 
-Then in a different terminal start frontend part
+Then in a different terminal start front-end part
 
 ```
 npm run start
@@ -209,10 +209,10 @@ Several other libraries are doing similar things. Most notable are _redux-schema
 In contrast to above libs, _redux-entity-store_ doesn't require you to define a schema for your data. Instead you work
 with plain JSON objects.
 
-In addition, _Redux-orm_ trends towards the fully-fledged ORM: relations between entities, batched updates, cascade deletes etc
-(think _Hibernate_). But I believe most projects could benefit from less powerfull but simpler model.
+In addition, _Redux-orm_ trends towards the ful-fledged ORM: relations between entities, batched updates, cascade deletes etc
+(think _Hibernate_). But I believe most projects could benefit from less powerful but simpler model.
 
-_Redux-schema_ does its job by completely abstracting from reducers. Thus each property change become a Redux action
+_Redux-schema_ does its job by completely abstracting from reducers. Thus each property change becomes a Redux action
 and reducer invocation. This code snippet
 
 ```
