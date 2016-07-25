@@ -30,7 +30,7 @@
   "author": "Vasyl Stashuk <vasyl@stashuk.com>",
   "license": "ISC",
   "dependencies": {
-    "redux-action-object": "0.0.1"
+    "redux-action-object": "0.1.0"
   },
   "devDependencies": {
     "babel-cli": "^6.10.1",
