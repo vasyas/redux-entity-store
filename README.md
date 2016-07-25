@@ -200,9 +200,34 @@ All demo data will be saved into Mysql. You can data dump by opening [http://loc
 
 ## API Reference
 
-
+TBD, see the source for now.
 
 ## Alternatives
+
+Several other libraries are doing similar things. Most notable are _redux-schema_ and _redux-orm_.
+
+In contrast to above libs, _redux-entity-store_ doesn't require you to define a schema for your data. Instead you work
+with plain JSON objects.
+
+In addition, _Redux-orm_ trends towards the fully-fledged ORM: relations between entities, batched updates, cascade deletes etc
+(think _Hibernate_). But I believe most projects could benefit from less powerfull but simpler model.
+
+_Redux-schema_ does its job by completely abstracting from reducers. Thus each property change become a Redux action
+and reducer invocation. This code snippet
+
+```
+user.login = 'michael';
+user.name = 'Michael Kane';
+```
+
+generates two Redux actions, for each property change.
+
+Such complete abstraction makes you loose benefits of the Redux architecture like separation of reducers (application logic)
+from the UI components (presentation logic).
+
+## License
+
+MIT. See [LICENSE](LICENSE)
 
 [npm-image]: https://img.shields.io/npm/v/redux-entity-store.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/redux-entity-store

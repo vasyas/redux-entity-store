@@ -1,0 +1,8 @@
+{
+  "plugins": ["/Users/vasyas/workspace/redux-entity-store/node_modules/jsdoc-babel"],
+  "babel": {
+    "extensions": ["js", "es6", "jsx"],
+    "presets": ["es2015", "stage-1", "react"],
+    "plugins": ["transform-flow-strip-types", "babel-plugin-transform-decorators-legacy"]
+  }
+}
