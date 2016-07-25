@@ -108,7 +108,7 @@ class TodosComponent extends React.Component {
 
 ## How it works
 
-*Redux-entity-store* intercepts reducers functions annotated with *@data*. All entities retreived via *session* and modified
+*Redux-entity-store* intercepts reducers functions annotated with *@data*. All entities retrieved via *session* and modified
 are put back into the store on return from the reducer.
 
 ## Binding UI components to entities
@@ -209,7 +209,7 @@ Several other libraries are doing similar things. Most notable are _redux-schema
 In contrast to above libs, _redux-entity-store_ doesn't require you to define a schema for your data. Instead you work
 with plain JSON objects.
 
-In addition, _Redux-orm_ trends towards the ful-fledged ORM: relations between entities, batched updates, cascade deletes etc
+In addition, _Redux-orm_ trends towards the full-fledged ORM: relations between entities, batched updates, cascade deletes etc
 (think _Hibernate_). But I believe most projects could benefit from less powerful but simpler model.
 
 _Redux-schema_ does its job by completely abstracting from reducers. Thus each property change becomes a Redux action
