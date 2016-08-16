@@ -12,7 +12,7 @@
     "start:server": "./node_modules/.bin/babel-node ./todo-demo-server.js",
     "start": "./node_modules/.bin/webpack-dev-server --config webpack-demo.config.js --colors",
     "test": "./node_modules/.bin/mocha $NODE_DEBUG_OPTION --require source-map-support/register --require babel-polyfill --compilers js:babel-core/register test",
-    "doc": "./node_modules/.bin/jsdoc2md --conf jsdoc.conf.json src/index.js"
+    "doc": "./node_modules/.bin/jsdoc2md --conf jsdoc.conf.json src/index.js >API.md"
   },
   "repository": {
     "type": "git",
